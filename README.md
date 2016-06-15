@@ -7,8 +7,8 @@ KNOWN LIMITATIONS:
 
 Requirements
 ------------
-- nRF51 SDK version 9
-- nRF51-DK
+- nRF5 SDK version 11
+- nRF51-DK or nRF52-DK
 - Keil or arm-none-eabi-gcc
 
 The project may need modifications to work with later versions or other boards. 

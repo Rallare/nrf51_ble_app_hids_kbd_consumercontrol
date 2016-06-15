@@ -37,60 +37,66 @@ remduplicates = $(strip $(if $1,$(firstword $1) $(call remduplicates,$(filter-ou
 
 #source common to all targets
 C_SOURCE_FILES += \
-$(abspath ../../../../../../components/libraries/button/app_button.c) \
-$(abspath ../../../../../../components/libraries/util/app_error.c) \
-$(abspath ../../../../../../components/libraries/timer/app_timer.c) \
-$(abspath ../../../../../../components/libraries/trace/app_trace.c) \
-$(abspath ../../../../../../components/libraries/util/nrf_assert.c) \
-$(abspath ../../../../../../components/libraries/sensorsim/sensorsim.c) \
-$(abspath ../../../../../../components/drivers_nrf/hal/nrf_delay.c) \
-$(abspath ../../../../../../components/drivers_nrf/common/nrf_drv_common.c) \
-$(abspath ../../../../../../components/drivers_nrf/gpiote/nrf_drv_gpiote.c) \
-$(abspath ../../../../../../components/drivers_nrf/pstorage/pstorage.c) \
-$(abspath ../../../../../bsp/bsp.c) \
-$(abspath ../../../main.c) \
-$(abspath ../../../../../../components/ble/common/ble_advdata.c) \
-$(abspath ../../../../../../components/ble/ble_advertising/ble_advertising.c) \
-$(abspath ../../../../../../components/ble/ble_services/ble_bas/ble_bas.c) \
-$(abspath ../../../../../../components/ble/common/ble_conn_params.c) \
-$(abspath ../../../../../../components/ble/ble_services/ble_dis/ble_dis.c) \
-$(abspath ../../../../../../components/ble/ble_services/ble_hids/ble_hids.c) \
-$(abspath ../../../../../../components/ble/common/ble_srv_common.c) \
-$(abspath ../../../../../../components/ble/device_manager/device_manager_peripheral.c) \
-$(abspath ../../../../../../components/toolchain/system_nrf51.c) \
-$(abspath ../../../../../../components/softdevice/common/softdevice_handler/softdevice_handler.c) \
+../../../../../../components/libraries/button/app_button.c \
+../../../../../../components/libraries/util/app_error.c \
+../../../../../../components/libraries/timer/app_timer.c \
+../../../../../../components/libraries/trace/app_trace.c \
+../../../../../../components/libraries/util/nrf_assert.c \
+../../../../../../components/libraries/sensorsim/sensorsim.c \
+../../../../../../components/libraries/fstorage/fstorage.c \
+../../../../../../components/drivers_nrf/delay/nrf_delay.c \
+../../../../../../components/drivers_nrf/common/nrf_drv_common.c \
+../../../../../../components/drivers_nrf/gpiote/nrf_drv_gpiote.c \
+../../../../../../components/drivers_nrf/pstorage/pstorage.c \
+../../../../../bsp/bsp.c \
+../../../main.c \
+../../../../../../components/ble/common/ble_advdata.c \
+../../../../../../components/ble/ble_advertising/ble_advertising.c \
+../../../../../../components/ble/ble_services/ble_bas/ble_bas.c \
+../../../../../../components/ble/common/ble_conn_params.c \
+../../../../../../components/ble/ble_services/ble_dis/ble_dis.c \
+../../../../../../components/ble/ble_services/ble_hids/ble_hids.c \
+../../../../../../components/ble/common/ble_srv_common.c \
+../../../../../../components/ble/device_manager/device_manager_peripheral.c \
+../../../../../../components/toolchain/system_nrf51.c \
+../../../../../../components/softdevice/common/softdevice_handler/softdevice_handler.c \
 
 #assembly files common to all targets
-ASM_SOURCE_FILES  = $(abspath ../../../../../../components/toolchain/gcc/gcc_startup_nrf51.s)
+ASM_SOURCE_FILES  = ../../../../../../components/toolchain/gcc/gcc_startup_nrf51.s
 
 #includes common to all targets
-INC_PATHS  = -I$(abspath ../../../config)
-INC_PATHS += -I$(abspath ../../../../../../components/libraries/scheduler)
-INC_PATHS += -I$(abspath ../../../../../../components/drivers_nrf/config)
-INC_PATHS += -I$(abspath ../../../../../bsp)
-INC_PATHS += -I$(abspath ../../../../../../components/libraries/fifo)
-INC_PATHS += -I$(abspath ../../../../../../components/ble/ble_services/ble_hids)
-INC_PATHS += -I$(abspath ../../../../../../components/softdevice/s130/headers)
-INC_PATHS += -I$(abspath ../../../../../../components/libraries/util)
-INC_PATHS += -I$(abspath ../../../../../../components/drivers_nrf/pstorage)
-INC_PATHS += -I$(abspath ../../../../../../components/drivers_nrf/uart)
-INC_PATHS += -I$(abspath ../../../../../../components/ble/common)
-INC_PATHS += -I$(abspath ../../../../../../components/libraries/sensorsim)
-INC_PATHS += -I$(abspath ../../../../../../components/ble/device_manager)
-INC_PATHS += -I$(abspath ../../../../../../components/ble/ble_services/ble_dis)
-INC_PATHS += -I$(abspath ../../../../../../components/device)
-INC_PATHS += -I$(abspath ../../../../../../components/libraries/button)
-INC_PATHS += -I$(abspath ../../../../../../components/libraries/timer)
-INC_PATHS += -I$(abspath ../../../../../../components/drivers_nrf/gpiote)
-INC_PATHS += -I$(abspath ../../../../../../components/drivers_nrf/hal)
-INC_PATHS += -I$(abspath ../../../../../../components/toolchain/gcc)
-INC_PATHS += -I$(abspath ../../../../../../components/toolchain)
-INC_PATHS += -I$(abspath ../../../../../../components/drivers_nrf/common)
-INC_PATHS += -I$(abspath ../../../../../../components/ble/ble_advertising)
-INC_PATHS += -I$(abspath ../../../../../../components/libraries/trace)
-INC_PATHS += -I$(abspath ../../../../../../components/ble/ble_services/ble_bas)
-INC_PATHS += -I$(abspath ../../../../../../components/softdevice/common/softdevice_handler)
-INC_PATHS += -I$(abspath ../../../../../../components/libraries/gpiote)
+INC_PATHS  = -I../../../config
+INC_PATHS += -I../../../../../../components/libraries/scheduler
+INC_PATHS += -I../../../../../../components/drivers_nrf/config
+INC_PATHS += -I../../../../../bsp
+INC_PATHS += -I../../../../../../components/libraries/fifo
+INC_PATHS += -I../../../../../../components/ble/ble_services/ble_hids
+INC_PATHS += -I../../../../../../components/softdevice/s130/headers
+INC_PATHS += -I../../../../../../components/libraries/util
+INC_PATHS += -I../../../../../../components/drivers_nrf/pstorage
+INC_PATHS += -I../../../../../../components/drivers_nrf/uart
+INC_PATHS += -I../../../../../../components/ble/common
+INC_PATHS += -I../../../../../../components/libraries/sensorsim
+INC_PATHS += -I../../../../../../components/libraries/fstorage
+INC_PATHS += -I../../../../../../components/libraries/fstorage/config
+INC_PATHS += -I../../../../../../components/libraries/experimental_section_vars
+INC_PATHS += -I../../../../../../components/ble/device_manager
+INC_PATHS += -I../../../../../../components/ble/ble_services/ble_dis
+INC_PATHS += -I../../../../../../components/device
+INC_PATHS += -I../../../../../../components/libraries/button
+INC_PATHS += -I../../../../../../components/libraries/timer
+INC_PATHS += -I../../../../../../components/drivers_nrf/gpiote
+INC_PATHS += -I../../../../../../components/drivers_nrf/hal
+INC_PATHS += -I../../../../../../components/drivers_nrf/delay
+INC_PATHS += -I../../../../../../components/toolchain/gcc
+INC_PATHS += -I../../../../../../components/toolchain/CMSIS/include
+INC_PATHS += -I../../../../../../components/toolchain
+INC_PATHS += -I../../../../../../components/drivers_nrf/common
+INC_PATHS += -I../../../../../../components/ble/ble_advertising
+INC_PATHS += -I../../../../../../components/libraries/trace
+INC_PATHS += -I../../../../../../components/ble/ble_services/ble_bas
+INC_PATHS += -I../../../../../../components/softdevice/common/softdevice_handler
+INC_PATHS += -I../../../../../../components/libraries/gpiote
 
 OBJECT_DIRECTORY = _build
 LISTING_DIRECTORY = $(OBJECT_DIRECTORY)

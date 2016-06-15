@@ -32,13 +32,13 @@ static __INLINE uint16_t pstorage_flash_page_size()
 
 static __INLINE uint32_t pstorage_flash_page_end()
 {
-   uint32_t bootloader_addr = NRF_UICR->BOOTLOADERADDR;
+   uint32_t bootloader_addr = NRF_UICR->NRFFW[0];
   
    return ((bootloader_addr != PSTORAGE_FLASH_EMPTY_MASK) ?
            (bootloader_addr/ PSTORAGE_FLASH_PAGE_SIZE) : NRF_FICR->CODESIZE);
 }
 
-#define PSTORAGE_FLASH_PAGE_END pstorage_flash_page_end()
+#define PSTORAGE_FLASH_PAGE_END     pstorage_flash_page_end()
 
 #define PSTORAGE_NUM_OF_PAGES       1                                                           /**< Number of flash pages allocated for the pstorage module excluding the swap page, configurable based on system requirements. */
 #define PSTORAGE_MIN_BLOCK_SIZE     0x0010                                                      /**< Minimum size of block that can be registered with the module. Should be configured based on system requirements, recommendation is not have this value to be at least size of word. */

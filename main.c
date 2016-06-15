@@ -33,7 +33,6 @@
 #include "nrf_assert.h"
 #include "app_error.h"
 #include "nrf_gpio.h"
-#include "nrf51_bitfields.h"
 #include "ble.h"
 #include "ble_hci.h"
 #include "ble_srv_common.h"
@@ -53,8 +52,8 @@
 #include "sensorsim.h"
 #include "ble_advertising.h"
 
-#define CENTRAL_LINK_COUNT          0                                  /**< Number of central links used by the application. When changing this number remember to adjust the RAM settings*/
-#define PERIPHERAL_LINK_COUNT       1                                  /**< Number of peripheral links used by the application. When changing this number remember to adjust the RAM settings*/
+#define CENTRAL_LINK_COUNT               0                                  /**< Number of central links used by the application. When changing this number remember to adjust the RAM settings*/
+#define PERIPHERAL_LINK_COUNT            1                                  /**< Number of peripheral links used by the application. When changing this number remember to adjust the RAM settings*/
 #define IS_SRVC_CHANGED_CHARACT_PRESENT  0                                              /**< Include or not the service_changed characteristic. if not enabled, the server's database cannot be changed for the lifetime of the device*/
 
 #define KEY_PRESS_BUTTON_PIN_NO          BSP_BUTTON_2                                       /**< Button used for sending keyboard text. */

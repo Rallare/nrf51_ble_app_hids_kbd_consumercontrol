@@ -53,6 +53,8 @@
 #include "sensorsim.h"
 #include "ble_advertising.h"
 
+#define CENTRAL_LINK_COUNT          0                                  /**< Number of central links used by the application. When changing this number remember to adjust the RAM settings*/
+#define PERIPHERAL_LINK_COUNT       1                                  /**< Number of peripheral links used by the application. When changing this number remember to adjust the RAM settings*/
 #define IS_SRVC_CHANGED_CHARACT_PRESENT  0                                              /**< Include or not the service_changed characteristic. if not enabled, the server's database cannot be changed for the lifetime of the device*/
 
 #define KEY_PRESS_BUTTON_PIN_NO          BSP_BUTTON_2                                       /**< Button used for sending keyboard text. */
@@ -201,21 +203,20 @@ typedef struct
 
 STATIC_ASSERT(sizeof(buffer_list_t) % 4 == 0);
 
-static ble_hids_t                        m_hids;                                        /**< Structure used to identify the HID service. */
-static ble_bas_t                         m_bas;                                         /**< Structure used to identify the battery service. */
-static bool                              m_in_boot_mode = false;                        /**< Current protocol mode. */
-static sensorsim_cfg_t                   m_battery_sim_cfg;                             /**< Battery Level sensor simulator configuration. */
-static sensorsim_state_t                 m_battery_sim_state;                           /**< Battery Level sensor simulator state. */
-static app_timer_id_t                    m_battery_timer_id;                            /**< Battery timer. */
-static app_timer_id_t                    m_sec_req_timer_id;
-static uint16_t                          m_conn_handle = BLE_CONN_HANDLE_INVALID;       /**< Handle of the current connection. */
-static dm_application_instance_t         m_app_handle;                                  /**< Application identifier allocated by device manager. */
-static dm_handle_t                       m_bonded_peer_handle;                          /**< Device reference handle to the current bonded central. */
+static ble_hids_t                       m_hids;                                        /**< Structure used to identify the HID service. */
+static ble_bas_t                        m_bas;                                         /**< Structure used to identify the battery service. */
+static bool                             m_in_boot_mode = false;                        /**< Current protocol mode. */
+static sensorsim_cfg_t                  m_battery_sim_cfg;                             /**< Battery Level sensor simulator configuration. */
+static sensorsim_state_t                m_battery_sim_state;                           /**< Battery Level sensor simulator state. */
+APP_TIMER_DEF(m_battery_timer_id);
+APP_TIMER_DEF(m_sec_req_timer_id);
+static uint16_t                         m_conn_handle = BLE_CONN_HANDLE_INVALID;       /**< Handle of the current connection. */
+static dm_application_instance_t        m_app_handle;                                  /**< Application identifier allocated by device manager. */
+static dm_handle_t                      m_bonded_peer_handle;                          /**< Device reference handle to the current bonded central. */
 
 static ble_uuid_t m_adv_uuids[] =        {{BLE_UUID_HUMAN_INTERFACE_DEVICE_SERVICE, BLE_UUID_TYPE_BLE}};
-static dm_application_instance_t       m_app_handle;                               /**< Application identifier allocated by device manager. */
-
-static dm_handle_t                     m_dm_handle;                                /**< Device manager's instance handle. */
+static dm_application_instance_t        m_app_handle;                               /**< Application identifier allocated by device manager. */
+static dm_handle_t                      m_dm_handle;                                /**< Device manager's instance handle. */
 
 typedef enum
 {
@@ -288,7 +289,7 @@ static void battery_level_update(void)
     err_code = ble_bas_battery_level_update(&m_bas, battery_level);
     if ((err_code != NRF_SUCCESS) &&
         (err_code != NRF_ERROR_INVALID_STATE) &&
-        (err_code != BLE_ERROR_NO_TX_BUFFERS) &&
+        (err_code != BLE_ERROR_NO_TX_PACKETS) &&
         (err_code != BLE_ERROR_GATTS_SYS_ATTR_MISSING)
     )
     {
@@ -359,7 +360,7 @@ static void leds_init(void)
 static void timers_init(void)
 {
     // Initialize timer module, making it use the scheduler.
-    APP_TIMER_INIT(APP_TIMER_PRESCALER, APP_TIMER_MAX_TIMERS, APP_TIMER_OP_QUEUE_SIZE, NULL);
+    APP_TIMER_INIT(APP_TIMER_PRESCALER, APP_TIMER_OP_QUEUE_SIZE, NULL);
 
     // Create battery timer.
     APP_ERROR_CHECK(app_timer_create(&m_battery_timer_id,
@@ -1024,20 +1025,25 @@ static void sys_evt_dispatch(uint32_t sys_evt)
 static void ble_stack_init(void)
 {
     uint32_t err_code;
-
+    
+    nrf_clock_lf_cfg_t clock_lf_cfg = NRF_CLOCK_LFCLKSRC;
+    
     // Initialize the SoftDevice handler module.
-    SOFTDEVICE_HANDLER_INIT(NRF_CLOCK_LFCLKSRC_XTAL_20_PPM, NULL);
-
-    // Enable BLE stack 
+    SOFTDEVICE_HANDLER_INIT(&clock_lf_cfg, NULL);
+    
     ble_enable_params_t ble_enable_params;
-    memset(&ble_enable_params, 0, sizeof(ble_enable_params));
-#ifdef S130
-    ble_enable_params.gatts_enable_params.attr_tab_size   = BLE_GATTS_ATTR_TAB_SIZE_DEFAULT;
-#endif
-    ble_enable_params.gatts_enable_params.service_changed = IS_SRVC_CHANGED_CHARACT_PRESENT;
-    err_code = sd_ble_enable(&ble_enable_params);
+    err_code = softdevice_enable_get_default_config(CENTRAL_LINK_COUNT,
+                                                    PERIPHERAL_LINK_COUNT,
+                                                    &ble_enable_params);
     APP_ERROR_CHECK(err_code);
-
+    
+    //Check the ram settings against the used number of links
+    CHECK_RAM_START_ADDR(CENTRAL_LINK_COUNT,PERIPHERAL_LINK_COUNT);
+    
+    // Enable BLE stack.
+    err_code = softdevice_enable(&ble_enable_params);
+    APP_ERROR_CHECK(err_code);
+    
     // Register with the SoftDevice handler module for BLE events.
     err_code = softdevice_ble_evt_handler_set(ble_evt_dispatch);
     APP_ERROR_CHECK(err_code);

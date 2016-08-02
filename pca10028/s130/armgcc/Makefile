@@ -66,6 +66,7 @@ ASM_SOURCE_FILES  = ../../../../../../components/toolchain/gcc/gcc_startup_nrf51
 
 #includes common to all targets
 INC_PATHS  = -I../../../config
+INC_PATHS += -I../../../config/ble_app_hids_keyboard_s130_pca10028
 INC_PATHS += -I../../../../../../components/libraries/scheduler
 INC_PATHS += -I../../../../../../components/drivers_nrf/config
 INC_PATHS += -I../../../../../bsp

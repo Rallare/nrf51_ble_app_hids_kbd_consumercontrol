@@ -1,15 +1,16 @@
-nrf51_ble_app_hids_kbd_consumercontrol
+nrf5x_ble_app_hids_kbd_consumercontrol
 ==================
 This project is a BLE HIDS implementation that controls volume and can print a simple keyboard string.
+Specifc branch for nRF52832 only.
 
 KNOWN LIMITATIONS:
 - limited testing
 
 Requirements
 ------------
-- nRF51 SDK version 9
-- nRF51-DK
-- Keil or arm-none-eabi-gcc
+- nRF51 SDK version 15
+- nRF52-DK
+- Keil, SES, IAR, or arm-none-eabi-gcc
 
 The project may need modifications to work with later versions or other boards. 
 
